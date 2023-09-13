@@ -4,6 +4,7 @@ pipeline {
     stage('prebulid') {
       steps {
         echo 'hello-world'
+        echo 'hello-world'
       }
     }
 
