@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloloit-deployment
+spec:
+  selector:
+    matchLabels:
+      app: helloloit-deployment
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: helloloit-deployment
+    spec:
+      containers:
+        - name: helloloit-deployment
+          image: randeep9/hello-loit
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
