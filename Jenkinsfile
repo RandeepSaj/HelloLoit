@@ -1,20 +1,38 @@
 pipeline {
-  agent any
-  stages {
-    stage('prebulid') {
-      steps {
-        echo 'hello-world'
-        echo 'hello-world'
-      }
+    agent any
+
+    environment {
+        KUBECONFIG = 'C:\\Users\\Hp\\.kube\\config'
     }
 
-    stage('version') {
-      steps {
-        sh '''java --version
-mvn -v
-git --version'''
-      }
+ 
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Deploy to Minikube') {
+            steps {
+                script {
+                    // Use 'start' to run a command in the background on Windows
+                    bat 'start kubectl --kubeconfig=${KUBECONFIG} apply -f deployment.yaml'
+                    bat 'start kubectl --kubeconfig=${KUBECONFIG} apply -f service.yaml'
+                }
+            }
+        }
     }
 
-  }
+ 
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
 }
